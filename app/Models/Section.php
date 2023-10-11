@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Section extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        "title",
+        "course_id"
+    ];
 }

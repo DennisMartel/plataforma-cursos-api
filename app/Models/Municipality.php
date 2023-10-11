@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Municipality extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        "name",
+        "zip_code",
+        "department_id"
+    ];
 }

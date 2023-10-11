@@ -13,4 +13,15 @@ class Course extends Model
     const REVIEW = 2;
     const APPROVED = 3;
     const REFUSED = 4;
+
+    protected $fillable = [
+        "title",
+        "subtitle",
+        "slug",
+        "price",
+        "status",
+        "user_id",
+        "category_id",
+        "level_id"
+    ];
 }
