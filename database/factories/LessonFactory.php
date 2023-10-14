@@ -17,7 +17,8 @@ class LessonFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            "title" => $this->faker->sentence(),
+            "url" => "https://youtu.be/kTe1XZfYq9M?si=_37fAfaszrMhZGfH",
         ];
     }
 }

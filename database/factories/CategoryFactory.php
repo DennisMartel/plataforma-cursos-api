@@ -17,7 +17,7 @@ class CategoryFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            "image" => "categories/".$this->faker->image("public/storage/categories/".date("Y")."/".date("m")."/".date("d"), 640, 480, null, false),
         ];
     }
 }

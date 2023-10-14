@@ -18,6 +18,7 @@ class Course extends Model
         "title",
         "subtitle",
         "slug",
+        "description",
         "price",
         "status",
         "user_id",

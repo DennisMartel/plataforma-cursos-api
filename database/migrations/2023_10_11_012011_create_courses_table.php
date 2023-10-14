@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string("title");
             $table->string("subtitle");
             $table->string("slug");
+            $table->longText("description");
             $table->decimal("price")->nullable();
             $table->enum("status", [Course::DRAFT, Course::REVIEW, Course::APPROVED, Course::REFUSED])->default(Course::DRAFT);
             $table->unsignedBigInteger("user_id");

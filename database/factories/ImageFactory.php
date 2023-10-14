@@ -16,8 +16,9 @@ class ImageFactory extends Factory
      */
     public function definition(): array
     {
+        $date =  date("Y") . "/" . date("m") . "/" . date("d");
         return [
-            //
+            "url" => "courses/{$date}/".$this->faker->image("public/storage/courses/{$date}", 640, 480, null, false),
         ];
     }
 }
