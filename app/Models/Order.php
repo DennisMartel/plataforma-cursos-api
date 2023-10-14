@@ -20,4 +20,24 @@ class Order extends Model
         "department_id",
         "municipality_id"
     ];
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
+
+    public function country() {
+        return $this->belongsTo(Country::class);
+    }
+
+    public function departament() {
+        return $this->belongsTo(Department::class);
+    }
+
+    public function municipality() {
+        return $this->belongsTo(Municipality::class);
+    }
+
+    public function order_items() {
+        return $this->hasMany(OrderItem::class);
+    }
 }

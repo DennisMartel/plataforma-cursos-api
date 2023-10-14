@@ -16,4 +16,12 @@ class Country extends Model
         "alpha_three_code",
         "flag_icon"
     ];
+
+    public function departments() {
+        return $this->hasMany(Department::class);
+    }
+
+    public function orders() {
+        return $this->hasMany(Order::class);
+    }
 }

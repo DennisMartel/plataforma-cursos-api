@@ -13,4 +13,8 @@ class Level extends Model
         "title",
         "slug"
     ];
+
+    public function courses() {
+        return $this->hasMany(Course::class);
+    }
 }

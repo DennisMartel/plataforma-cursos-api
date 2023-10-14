@@ -24,4 +24,36 @@ class Course extends Model
         "category_id",
         "level_id"
     ];
+
+    public function carts() {
+        return $this->belongsToMany(Cart::class);
+    }
+
+    public function category() {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function level() {
+        return $this->belongsTo(Level::class);
+    }
+
+    public function teacher() {
+        return $this->belongsTo(User::class, "user_id");
+    }
+
+    public function students() {
+        return $this->belongsToMany(User::class);
+    }
+
+    public function sections() {
+        return $this->hasMany(Section::class);
+    }
+
+    public function images() {
+        return $this->morphOne(Image::class, "imageable");
+    }
+
+    public function lessons() {
+        return $this->hasManyThrough(Lesson::class, Section::class);
+    }
 }

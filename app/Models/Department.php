@@ -14,4 +14,16 @@ class Department extends Model
         "iso_code",
         "country_id"
     ];
+
+    public function country() {
+        return $this->belongsTo(Country::class);
+    }
+
+    public function municipalities() {
+        return $this->hasMany(Municipality::class);
+    }
+
+    public function orders() {
+        return $this->hasMany(Order::class);
+    }
 }
