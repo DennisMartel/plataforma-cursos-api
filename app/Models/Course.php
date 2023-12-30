@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
@@ -15,7 +16,7 @@ class Course extends Model
   const APPROVED = 3;
   const REFUSED = 4;
 
-  protected $withCount = ["students", "reviews"];
+  protected $withCount = ["students", "lessons"];
 
   protected $fillable = [
     "title",
@@ -33,7 +34,8 @@ class Course extends Model
     "teacher_image",
     "teacher_name",
     "image_course",
-    "rating"
+    "rating",
+    'last_update'
   ];
 
   protected $hidden = [
@@ -130,9 +132,14 @@ class Course extends Model
   public function getRatingAttribute()
   {
     if ($this->reviews_count) {
-      return round($this->reviews->avg("rating"), 1);
+      return round($this->reviews->avg("rating"), 2);
     }
 
     return 5;
+  }
+
+  public function getLastUpdateAttribute()
+  {
+    return Carbon::parse($this->updated_at)->toDateString();
   }
 }

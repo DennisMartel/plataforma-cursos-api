@@ -22,4 +22,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::middleware("x_api_key")->group(function () {
   Route::get("/courses", [CourseController::class, "index"]);
   Route::get("/search-course/{term}", [CourseController::class, "search_courses"]);
+  Route::post("/show-course", [CourseController::class, "show_course"]);
 });
