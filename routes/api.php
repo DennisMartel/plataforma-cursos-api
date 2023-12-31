@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\CourseController;
+use App\Http\Controllers\Api\FilterController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,4 +24,7 @@ Route::middleware("x_api_key")->group(function () {
   Route::get("/courses", [CourseController::class, "index"]);
   Route::get("/search-course/{term}", [CourseController::class, "search_courses"]);
   Route::post("/show-course", [CourseController::class, "show_course"]);
+  Route::post("/all-courses", [CourseController::class, "all_courses"]);
+
+  Route::get("/get-all-filters", FilterController::class);
 });

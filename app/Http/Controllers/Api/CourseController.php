@@ -46,4 +46,17 @@ class CourseController extends Controller
       return response()->json($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
     }
   }
+
+  public function all_courses()
+  {
+    try {
+      $courses = Course::where("status", Course::APPROVED)
+        ->latest("id")
+        ->paginate(12);
+
+      return response()->json($courses, Response::HTTP_OK);
+    } catch (Exception $e) {
+      return response()->json($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+    }
+  }
 }

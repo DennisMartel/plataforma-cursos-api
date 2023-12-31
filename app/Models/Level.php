@@ -7,14 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Level extends Model
 {
-    use HasFactory;
+  use HasFactory;
 
-    protected $fillable = [
-        "title",
-        "slug"
-    ];
+  protected $withCount = ["courses"];
 
-    public function courses() {
-        return $this->hasMany(Course::class);
-    }
+  protected $fillable = [
+    "title",
+    "slug"
+  ];
+
+  public function courses()
+  {
+    return $this->hasMany(Course::class);
+  }
 }
