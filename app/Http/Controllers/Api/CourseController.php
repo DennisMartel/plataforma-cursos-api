@@ -50,7 +50,21 @@ class CourseController extends Controller
   public function all_courses()
   {
     try {
+      $cats = request("categories");
+      $levels = request("levels");
+      $prices = request("prices");
+
       $courses = Course::where("status", Course::APPROVED)
+        ->whereHas("category", function ($query) use ($cats) {
+          $query->when($cats, function ($query) use ($cats) {
+            $query->whereIn("title", $cats);
+          });
+        })
+        ->whereHas("level", function ($query) use ($levels) {
+          $query->when($levels, function ($query) use ($levels) {
+            $query->whereIn("title", $levels);
+          });
+        })
         ->latest("id")
         ->paginate(12);
 
