@@ -66,7 +66,7 @@ class CourseController extends Controller
           });
         })
         ->latest("id")
-        ->paginate(12);
+        ->paginate(12, ["*"], "p");
 
       return response()->json($courses, Response::HTTP_OK);
     } catch (Exception $e) {
