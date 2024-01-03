@@ -53,6 +53,7 @@ class CourseController extends Controller
       $cats = request("categories");
       $levels = request("levels");
       $prices = request("prices");
+      $page = request("page");
 
       $courses = Course::where("status", Course::APPROVED)
         ->whereHas("category", function ($query) use ($cats) {
@@ -66,7 +67,7 @@ class CourseController extends Controller
           });
         })
         ->latest("id")
-        ->paginate(12, ["*"], "p");
+        ->paginate(12, ["*"], "page", $page);
 
       return response()->json($courses, Response::HTTP_OK);
     } catch (Exception $e) {
