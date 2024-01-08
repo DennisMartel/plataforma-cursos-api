@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CourseController;
 use App\Http\Controllers\Api\FilterController;
 use Illuminate\Http\Request;
@@ -27,4 +28,8 @@ Route::middleware("x_api_key")->group(function () {
   Route::post("/all-courses", [CourseController::class, "all_courses"]);
 
   Route::get("/get-all-filters", FilterController::class);
+
+  Route::prefix("authentication")->group(function () {
+    Route::post("/sign-in", [AuthController::class, "signin"]);
+  });
 });
