@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CourseController;
 use App\Http\Controllers\Api\FilterController;
+use App\Http\Controllers\Api\SocialAuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -31,5 +32,7 @@ Route::middleware("x_api_key")->group(function () {
 
   Route::prefix("authentication")->group(function () {
     Route::post("/sign-in", [AuthController::class, "signin"]);
+    Route::get("/provider/{driver}", [SocialAuthController::class, "redirectToAuth"]);
+    Route::get("/provider/{driver}/callback", [SocialAuthController::class, "handleAuthCallback"]);
   });
 });
