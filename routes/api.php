@@ -32,6 +32,7 @@ Route::middleware("x_api_key")->group(function () {
 
   Route::prefix("authentication")->group(function () {
     Route::post("/sign-in", [AuthController::class, "signin"]);
+    Route::post("/sign-up", [AuthController::class, "signup"]);
     Route::get("/provider/{driver}", [SocialAuthController::class, "redirectToAuth"]);
     Route::get("/provider/{driver}/callback", [SocialAuthController::class, "handleAuthCallback"]);
   });

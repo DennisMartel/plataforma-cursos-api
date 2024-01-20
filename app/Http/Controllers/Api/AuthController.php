@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\User\StoreRequest;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -26,7 +29,7 @@ class AuthController extends Controller
       ]);
 
       if ($validator->fails()) {
-        return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
+        return response()->json($validator->messages(), Response::HTTP_UNPROCESSABLE_ENTITY);
       }
 
       $credentials = $req->only("email", "password");
@@ -62,6 +65,38 @@ class AuthController extends Controller
         "user" => $user,
         "authorization" => [
           "token" => $token,
+          "type" => "Bearer"
+        ]
+      ], Response::HTTP_OK);
+    } catch (Exception $e) {
+      return response()->json([
+        "type" => "error",
+        "success" => false,
+        "isLogged" => false,
+        "title" => "Error",
+        "message" => $e->getMessage()
+      ], Response::HTTP_INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  public function signup(StoreRequest $req)
+  {
+    try {
+      $user = User::create([
+        "name" => $req->name,
+        "email" => $req->email,
+        "password" => Hash::make($req->password)
+      ]);
+
+      $jwt = JWTAuth::fromUser($user);
+
+      return response()->json([
+        "type" => "success",
+        "success" => true,
+        "isLogged" => true,
+        "user" => $user,
+        "authorization" => [
+          "token" => $jwt,
           "type" => "Bearer"
         ]
       ], Response::HTTP_OK);
