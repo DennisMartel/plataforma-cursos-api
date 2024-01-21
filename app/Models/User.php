@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Notifications\ResetPasswordNotification;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -126,6 +127,11 @@ class User extends Authenticatable implements JWTSubject
     return $this->hasMany(Review::class);
   }
 
+  public function verificationCode()
+  {
+    return $this->hasOne(VerificationCode::class);
+  }
+
   // Attribute
   public function getProfileImageAttribute()
   {
@@ -140,5 +146,11 @@ class User extends Authenticatable implements JWTSubject
     }
 
     return asset("images/default-avatar.png");
+  }
+
+  public function sendPasswordResetNotification($token)
+  {
+    $url = env("RESET_PASSWORD_URL") . "/{$token}/{$this->email}";
+    $this->notify(new ResetPasswordNotification($url));
   }
 }

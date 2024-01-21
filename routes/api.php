@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CourseController;
 use App\Http\Controllers\Api\FilterController;
+use App\Http\Controllers\Api\ForgotPasswordController;
 use App\Http\Controllers\Api\SocialAuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -33,6 +34,9 @@ Route::middleware("x_api_key")->group(function () {
   Route::prefix("authentication")->group(function () {
     Route::post("/sign-in", [AuthController::class, "signin"]);
     Route::post("/sign-up", [AuthController::class, "signup"]);
+    Route::post("/send-code-verification", [ForgotPasswordController::class, "sendCodeVerification"]);
+    Route::post("/forgot-password", [ForgotPasswordController::class, "forgotPassword"]);
+    Route::post("/reset-password", [ForgotPasswordController::class, "resetPassword"]);
     Route::get("/provider/{driver}", [SocialAuthController::class, "redirectToAuth"]);
     Route::get("/provider/{driver}/callback", [SocialAuthController::class, "handleAuthCallback"]);
   });
