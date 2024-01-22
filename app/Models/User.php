@@ -150,7 +150,7 @@ class User extends Authenticatable implements JWTSubject
 
   public function sendPasswordResetNotification($token)
   {
-    $url = env("RESET_PASSWORD_URL") . "/{$token}/{$this->email}";
+    $url = env("RESET_PASSWORD_URL") . "?token={$token}&email={$this->email}";
     $this->notify(new ResetPasswordNotification($url));
   }
 }
