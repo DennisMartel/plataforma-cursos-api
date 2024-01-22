@@ -72,6 +72,8 @@ class ForgotPasswordController extends Controller
     return response()->json([
       "type" => "success",
       "success" => true,
+      "title" => "Accion realizada con exito",
+      "message" => "Hemos enviado un código de verificación a tu correo para que puedas restablecer tu contraseña",
     ], 200);
   }
 
