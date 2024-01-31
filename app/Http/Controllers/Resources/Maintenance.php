@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Resources;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 
 class Maintenance extends Controller
@@ -15,7 +16,8 @@ class Maintenance extends Controller
     if ($jsonFileExist) {
       $jsonFile = json_decode(Storage::disk("public")->get($staticDir));
 
-      return response()->json($jsonFile);
+      return response()->json($jsonFile, Response::HTTP_OK)
+        ->header('Access-Control-Allow-Origin', '*');
     }
 
     return defaultEntryJsonNotFound();
