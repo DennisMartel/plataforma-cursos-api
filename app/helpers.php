@@ -8,7 +8,7 @@ function defaultEntryJsonNotFound()
   $staticDir = "resources/noentry.json";
   if (Storage::disk("public")->exists($staticDir)) {
     $jsonFile = json_decode(Storage::disk("public")->get($staticDir));
-    return response()->json($jsonFile, Response::HTTP_NOT_FOUND);
+    return response()->json($jsonFile, Response::HTTP_NOT_FOUND)->header('Access-Control-Allow-Origin', '*');
   }
 
   return response()->json([
