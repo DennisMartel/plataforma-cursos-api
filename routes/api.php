@@ -27,6 +27,7 @@ Route::middleware("x_api_key")->group(function () {
   Route::get("/courses", [CourseController::class, "index"]);
   Route::get("/search-course/{term}", [CourseController::class, "search_courses"]);
   Route::post("/show-course", [CourseController::class, "show_course"]);
+  Route::post("/{id}/status-course", [CourseController::class, "status_course"]);
   Route::post("/all-courses", [CourseController::class, "all_courses"]);
 
   Route::get("/get-all-filters", FilterController::class);

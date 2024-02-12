@@ -47,6 +47,38 @@ class CourseController extends Controller
     }
   }
 
+  public function status_course($id)
+  {
+    try {
+      $course = Course::find($id);
+      $user = auth()->user();
+
+      if ($user == null) :
+        return response()->json([
+          "message" => "user is not logged in",
+          "status" => false,
+          "isLogged" => false
+        ], Response::HTTP_FORBIDDEN);
+      endif;
+
+      $isEnrolled = $course->students->contains($user);
+
+      if ($isEnrolled == false) :
+        return response()->json([
+          "message" => "user is not enrolled",
+          "status" => false,
+          "unauthorized" => true
+        ], Response::HTTP_FORBIDDEN);
+      endif;
+
+      $data = Course::with(["sections.lessons"])->find($id);
+
+      return response()->json($data, Response::HTTP_OK);
+    } catch (Exception $e) {
+      return response()->json($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+    }
+  }
+
   public function all_courses()
   {
     try {
