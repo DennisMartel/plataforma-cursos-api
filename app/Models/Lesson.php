@@ -7,20 +7,27 @@ use Illuminate\Database\Eloquent\Model;
 
 class Lesson extends Model
 {
-    use HasFactory;
+  use HasFactory;
 
-    protected $fillable = [
-        "title",
-        "url",
-        "section_id"
-    ];
+  protected $fillable = [
+    "title",
+    "url",
+    "section_id"
+  ];
 
-    public function section() {
-        return $this->belongsTo(Section::class);
-    }
+  // Attributes
+  public function getCompletedAttribute()
+  {
+    return $this->users->contains(auth()->guard("api")->user()->id);
+  }
 
-    public function users()
-    {
-        return $this->belongsToMany(User::class);
-    }
+  public function section()
+  {
+    return $this->belongsTo(Section::class);
+  }
+
+  public function users()
+  {
+    return $this->belongsToMany(User::class);
+  }
 }

@@ -7,6 +7,7 @@ use App\Models\Course;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use stdClass;
 
 class CourseController extends Controller
 {
@@ -40,7 +41,7 @@ class CourseController extends Controller
       }
 
       return response()->json([
-        "message" => "not found"
+        "message" => __("messages.not_found")
       ], Response::HTTP_NOT_FOUND);
     } catch (Exception $e) {
       return response()->json($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
@@ -55,23 +56,30 @@ class CourseController extends Controller
 
       if ($user == null) :
         return response()->json([
-          "message" => "user is not logged in",
+          "message" => __('messages.user_not_logged'),
           "status" => false,
           "isLogged" => false
         ], Response::HTTP_FORBIDDEN);
       endif;
 
-      $isEnrolled = $course->students->contains($user);
-
-      if ($isEnrolled == false) :
+      if ($course->is_enrolled == false) :
         return response()->json([
-          "message" => "user is not enrolled",
+          "message" => __('messages.user_not_enrolled'),
           "status" => false,
           "unauthorized" => true
         ], Response::HTTP_FORBIDDEN);
       endif;
 
-      $data = Course::with(["sections.lessons"])->find($id);
+      $i = 0;
+      foreach ($course->lessons as $lesson) :
+        if ($lesson->completed) :
+          $i++;
+        endif;
+      endforeach;
+
+      $data = new stdClass;
+      $data->data = Course::with(["sections.lessons"])->find($id);
+      $data->advance = round(($i * 100) / $course->lessons->count(), 1);
 
       return response()->json($data, Response::HTTP_OK);
     } catch (Exception $e) {

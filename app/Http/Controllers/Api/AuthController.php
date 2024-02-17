@@ -42,8 +42,8 @@ class AuthController extends Controller
             "type" => "error",
             "success" => false,
             "isLogged" => false,
-            "title" => "Lo sentimos",
-            "message" => "Los datos ingresados no coinciden con nuestros registros",
+            "title" => __("messages.sorry"),
+            "message" => __("messages.credentials_not_match"),
           ], Response::HTTP_UNAUTHORIZED);
         }
       } catch (JWTException $e) {
@@ -51,7 +51,7 @@ class AuthController extends Controller
           "type" => "error",
           "success" => false,
           "isLogged" => false,
-          "title" => "Lo sentimos",
+          "title" => __("messages.sorry"),
           "message" => $e->getMessage(),
         ], Response::HTTP_INTERNAL_SERVER_ERROR);
       }

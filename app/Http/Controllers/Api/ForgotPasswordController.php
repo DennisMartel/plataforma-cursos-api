@@ -36,8 +36,8 @@ class ForgotPasswordController extends Controller
       return response()->json([
         "type" => "error",
         "success" => false,
-        "title" => "Lo sentimos",
-        "message" => "Los datos ingresados no coinciden con nuestros registros",
+        "title" => __("messages.sorry"),
+        "message" => __("messages.credentials_not_match"),
       ], 401);
     }
 
@@ -64,16 +64,16 @@ class ForgotPasswordController extends Controller
       return response()->json([
         "type" => "error",
         "success" => false,
-        "title" => "Lo sentimos",
-        "message" => "No se pudo procesar la solicitud, intenta de nuevo",
+        "title" => __("messages.sorry"),
+        "message" => __("messages.request_not_processed"),
       ], 500);
     }
 
     return response()->json([
       "type" => "success",
       "success" => true,
-      "title" => "Accion realizada con exito",
-      "message" => "Hemos enviado un código de verificación a tu correo para que puedas restablecer tu contraseña",
+      "title" => __("messages.request_processed"),
+      "message" => __("messages.success_code_send"),
     ], 200);
   }
 
@@ -105,8 +105,8 @@ class ForgotPasswordController extends Controller
         return response()->json([
           "type" => "error",
           "success" => false,
-          "title" => "Lo sentimos",
-          "message" => "No se pudo procesar la solicitud, intenta de nuevo",
+          "title" => __("messages.sorry"),
+          "message" => __("messages.request_not_processed"),
         ], 500);
       }
 
@@ -120,8 +120,8 @@ class ForgotPasswordController extends Controller
         return response()->json([
           "type" => "success",
           "success" => true,
-          "title" => "Accion realizada con exito",
-          "message" => "Hemos enviado un enlace a tu correo para que puedas restablecer tu contraseña"
+          "title" => __("messages.request_processed"),
+          "message" => __("messages.success_link_send")
         ], 200);
       }
 
@@ -132,7 +132,7 @@ class ForgotPasswordController extends Controller
       return response()->json([
         "type" => "error",
         "success" => false,
-        "title" => "Error inesperado",
+        "title" => __("messages.unexpected_error"),
         "message" => $e->getMessage(),
       ], 500);
     }
@@ -156,8 +156,8 @@ class ForgotPasswordController extends Controller
       return response()->json([
         "type" => "error",
         "success" => false,
-        "title" => "Lo sentimos",
-        "message" => "Los datos ingresados no coinciden con nuestros registros",
+        "title" => __("messages.sorry"),
+        "message" => __("messages.credentials_not_match"),
       ], 400);
     }
 
@@ -167,8 +167,8 @@ class ForgotPasswordController extends Controller
       return response()->json([
         "type" => "error",
         "success" => false,
-        "title" => "Lo sentimos",
-        "message" => "El token de restablecimiento de contraseña es inválido o ha expirado. Solicite un nuevo enlace de restablecimiento de contraseña.",
+        "title" => __("messages.sorry"),
+        "message" => __("messages.password_token_invalid"),
       ], 400);
     }
 

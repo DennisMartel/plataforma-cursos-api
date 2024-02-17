@@ -29,7 +29,7 @@ class SocialAuthController extends Controller
       $userSocialite = Socialite::driver($driver)->stateless()->user();
     } catch (ClientException $e) {
       return response()->json([
-        "message" => "Las credenciales proporcionadas no son válidas.",
+        "message" => __("messages.credentials_not_match"),
       ], Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
@@ -58,9 +58,9 @@ class SocialAuthController extends Controller
 
     if (!$jwt) {
       return response()->json([
-        "title" => "Lo sentimos",
-        "message" => "No se logro obtener resultados",
-        "buttonText" => "Intentar de nuevo",
+        "title" => __("messages.sorry"),
+        "message" => __("messages.request_not_processed"),
+        "buttonText" => "",
         "loggedinUser" => false
       ], 400);
     }

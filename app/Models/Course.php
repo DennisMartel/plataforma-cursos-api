@@ -138,6 +138,11 @@ class Course extends Model
     return 5;
   }
 
+  public function getIsEnrolledAttribute()
+  {
+    return $this->students->contains(auth()->guard("api")->user()->id);
+  }
+
   public function getLastUpdateAttribute()
   {
     return Carbon::parse($this->updated_at)->toDateString();
