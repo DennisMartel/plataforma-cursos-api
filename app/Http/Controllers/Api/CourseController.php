@@ -48,10 +48,20 @@ class CourseController extends Controller
     }
   }
 
-  public function status_course($id)
+  public function status_course(Request $request)
   {
     try {
+      $id = $request->courseId;
+
       $course = Course::find($id);
+
+      if ($course == null) :
+        return response()->json([
+          "message" => __("messages.not_found"),
+          "status" => false,
+        ], Response::HTTP_BAD_REQUEST);
+      endif;
+
       $user = auth()->user();
 
       if ($user == null) :
