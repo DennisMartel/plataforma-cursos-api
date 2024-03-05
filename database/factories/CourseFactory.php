@@ -14,25 +14,25 @@ use Illuminate\Support\Str;
  */
 class CourseFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
-    public function definition(): array
-    {
-        $title = $this->faker->sentence();
-        
-        return [
-            "title" => $title,
-            "subtitle" => $this->faker->sentence(10),
-            "slug" => Str::slug($title),
-            "description" => $this->faker->paragraph(),
-            "price" => $this->faker->randomFloat(2, 9, 30),
-            "status" => $this->faker->randomElement([Course::DRAFT, Course::REVIEW, Course::APPROVED, Course::REFUSED]),
-            "user_id" => User::all()->random()->id,
-            "category_id" => Category::all()->random()->id,
-            "level_id" => Level::all()->random()->id,
-        ];
-    }
+  /**
+   * Define the model's default state.
+   *
+   * @return array<string, mixed>
+   */
+  public function definition(): array
+  {
+    $title = $this->faker->sentence();
+
+    return [
+      "title" => $title,
+      "subtitle" => $this->faker->sentence(10),
+      "slug" => Str::slug($title),
+      "description" => $this->faker->paragraph(),
+      "price" => $this->faker->randomFloat(2, 9, 30),
+      "status" => Course::APPROVED,
+      "user_id" => User::all()->random()->id,
+      "category_id" => Category::all()->random()->id,
+      "level_id" => Level::all()->random()->id,
+    ];
+  }
 }

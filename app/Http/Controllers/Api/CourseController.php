@@ -80,16 +80,16 @@ class CourseController extends Controller
         ], Response::HTTP_FORBIDDEN);
       endif;
 
-      $i = 0;
-      foreach ($course->lessons as $lesson) :
-        if ($lesson->completed) :
-          $i++;
-        endif;
-      endforeach;
+      // $i = 0;
+      // foreach ($course->lessons as $lesson) :
+      //   if ($lesson->completed) :
+      //     $i++;
+      //   endif;
+      // endforeach;
 
-      $data = new stdClass;
-      $data->data = Course::with(["sections.lessons"])->find($id);
-      $data->advance = round(($i * 100) / $course->lessons->count(), 1);
+      // $data = new stdClass;
+      $data = Course::with(["sections.lessons"])->find($id);
+      // $data->advance = round(($i * 100) / $course->lessons->count(), 1);
 
       return response()->json($data, Response::HTTP_OK);
     } catch (Exception $e) {
