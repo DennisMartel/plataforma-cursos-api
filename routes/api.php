@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CourseController;
+use App\Http\Controllers\Api\CourseStatusController;
 use App\Http\Controllers\Api\FilterController;
 use App\Http\Controllers\Api\ForgotPasswordController;
 use App\Http\Controllers\Api\SocialAuthController;
@@ -24,13 +25,17 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::middleware("x_api_key")->group(function () {
+  Route::get("/get-all-filters", FilterController::class);
   Route::get("/courses", [CourseController::class, "index"]);
   Route::get("/search-course/{term}", [CourseController::class, "search_courses"]);
   Route::post("/show-course", [CourseController::class, "show_course"]);
-  Route::post("/course-learn-status", [CourseController::class, "status_course"]);
   Route::post("/all-courses", [CourseController::class, "all_courses"]);
 
-  Route::get("/get-all-filters", FilterController::class);
+  Route::middleware("jwt.verify")->group(function () {
+    Route::post("/course-learn-curriculum", [CourseStatusController::class, "curriculum"]);
+    Route::get("/course-progress", [CourseStatusController::class, "progress"]);
+    Route::post("/toggle-lesson-status", [CourseStatusController::class, "toggle_lesson_status"]);
+  });
 
   Route::prefix("authentication")->group(function () {
     Route::post("/sign-in", [AuthController::class, "signin"]);

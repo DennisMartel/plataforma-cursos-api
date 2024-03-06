@@ -21,6 +21,11 @@ class Lesson extends Model
     return $this->users->contains(auth()->guard("api")->user()->id);
   }
 
+  public function getCompletedLectureIdsAttribute()
+  {
+    return $this->users;
+  }
+
   public function section()
   {
     return $this->belongsTo(Section::class);
