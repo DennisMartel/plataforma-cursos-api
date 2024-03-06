@@ -35,7 +35,8 @@ class Course extends Model
     "teacher_name",
     "image_course",
     "rating",
-    'last_update'
+    "last_update",
+    "is_enrolled"
   ];
 
   protected $hidden = [
@@ -140,7 +141,7 @@ class Course extends Model
 
   public function getIsEnrolledAttribute()
   {
-    return $this->students->contains(auth()->guard("api")->user()->id);
+    return $this->students->contains(auth()?->guard("api")?->user()?->id);
   }
 
   public function getLastUpdateAttribute()
