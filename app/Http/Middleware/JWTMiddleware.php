@@ -22,18 +22,18 @@ class JWTMiddleware
       $user = JWTAuth::parseToken()->authenticate();
 
       if ($user == null) :
-        return response()->json(["message" => "Unauthorized"], HttpResponse::HTTP_UNAUTHORIZED);
+        return response()->json(["message" => "Unauthorized"], HttpResponse::HTTP_FORBIDDEN);
       endif;
     } catch (JWTException $e) {
       if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) {
-        return response()->json(['message' => $e->getMessage()], HttpResponse::HTTP_UNAUTHORIZED);
+        return response()->json(['message' => $e->getMessage()], HttpResponse::HTTP_FORBIDDEN);
       }
 
       if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException) {
-        return response()->json(['message' => $e->getMessage()], HttpResponse::HTTP_UNAUTHORIZED);
+        return response()->json(['message' => $e->getMessage()], HttpResponse::HTTP_FORBIDDEN);
       }
 
-      return response()->json(['message' => $e->getMessage()], HttpResponse::HTTP_UNAUTHORIZED);
+      return response()->json(['message' => $e->getMessage()], HttpResponse::HTTP_FORBIDDEN);
     }
 
     return $next($request);

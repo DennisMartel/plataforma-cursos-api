@@ -103,25 +103,55 @@ class CourseStatusController extends Controller
     } catch (\Exception $e) {
       return response()->json([
         "message" => __("messages.unexpected_error") . $e->getMessage()
-      ], Response::HTTP_OK);
+      ], Response::HTTP_INTERNAL_SERVER_ERROR);
     }
   }
 
   public function toggle_lesson_status()
   {
-    $lesson = Lesson::find(request()->headers->get("lessonId"));
+    try {
+      $course = Course::find(request()->headers->get("courseId"));
+      $lesson = Lesson::find(request()->headers->get("lessonId"));
 
-    if ($lesson == null) :
+      if ($course == null || $lesson == null) :
+        return response()->json([
+          "message" => __("messages.not_found"),
+          "status" => false,
+        ], Response::HTTP_BAD_REQUEST);
+      endif;
+
+      if ($this->user == null) :
+        return response()->json([
+          "message" => __('messages.user_not_logged'),
+          "status" => false,
+          "isLogged" => false
+        ], Response::HTTP_FORBIDDEN);
+      endif;
+
+      if ($course->is_enrolled == false) :
+        return response()->json([
+          "message" => __('messages.user_not_enrolled'),
+          "status" => false,
+          "unauthorized" => true
+        ], Response::HTTP_FORBIDDEN);
+      endif;
+
+      if ($course->lessons->contains($lesson->id)) :
+        if ($lesson->completed) :
+          $lesson->users()->detach($this->user->id);
+        else :
+          $lesson->users()->attach($this->user->id);
+        endif;
+      else :
+        return response()->json([
+          "message" => __("messages.request_not_processed"),
+          "status" => false,
+        ], Response::HTTP_BAD_REQUEST);
+      endif;
+    } catch (\Exception $e) {
       return response()->json([
-        "message" => __("messages.not_found"),
-        "status" => false,
-      ], Response::HTTP_BAD_REQUEST);
-    endif;
-
-    if ($lesson->completed) :
-      $lesson->users()->detach($this->user->id);
-    else :
-      $lesson->users()->attach($this->user->id);
-    endif;
+        "message" => __("messages.unexpected_error") . $e->getMessage()
+      ], Response::HTTP_INTERNAL_SERVER_ERROR);
+    }
   }
 }
