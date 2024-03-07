@@ -107,6 +107,41 @@ class CourseStatusController extends Controller
     }
   }
 
+  public function enroll()
+  {
+    try {
+      $course = Course::find(request()->headers->get("courseId"));
+
+      if ($course == null) :
+        return response()->json([
+          "message" => __("messages.not_found"),
+          "status" => false,
+        ], Response::HTTP_BAD_REQUEST);
+      endif;
+
+      if ($this->user == null) :
+        return response()->json([
+          "message" => __('messages.user_not_logged'),
+          "status" => false,
+          "isLogged" => false
+        ], Response::HTTP_FORBIDDEN);
+      endif;
+
+      if ($course->is_enrolled == false) :
+        $course->students()->attach($this->user->id);
+      else :
+        return response()->json([
+          "message" => __("messages.request_not_processed"),
+          "status" => false,
+        ], Response::HTTP_BAD_REQUEST);
+      endif;
+    } catch (\Exception $e) {
+      return response()->json([
+        "message" => __("messages.unexpected_error") . $e->getMessage()
+      ], Response::HTTP_INTERNAL_SERVER_ERROR);
+    }
+  }
+
   public function toggle_lesson_status()
   {
     try {

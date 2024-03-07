@@ -31,10 +31,11 @@ Route::middleware("x_api_key")->group(function () {
   Route::post("/show-course", [CourseController::class, "show_course"]);
   Route::post("/all-courses", [CourseController::class, "all_courses"]);
 
-  Route::middleware("jwt.verify")->group(function () {
+  Route::middleware(["jwt.verify", "auth:api"])->group(function () {
     Route::post("/course-learn-curriculum", [CourseStatusController::class, "curriculum"]);
     Route::get("/course-progress", [CourseStatusController::class, "progress"]);
     Route::post("/toggle-lesson-status", [CourseStatusController::class, "toggle_lesson_status"]);
+    Route::post("/course-enroll", [CourseStatusController::class, "enroll"]);
   });
 
   Route::prefix("authentication")->group(function () {
