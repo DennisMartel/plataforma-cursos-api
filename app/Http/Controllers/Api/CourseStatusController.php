@@ -46,7 +46,7 @@ class CourseStatusController extends Controller
         ], Response::HTTP_FORBIDDEN);
       endif;
 
-      $data = Course::with(["sections.lessons"])->find($id);
+      $data = Course::with(["sections.lessons", "lessons"])->find($id);
 
       return response()->json($data, Response::HTTP_OK);
     } catch (\Exception $e) {

@@ -48,7 +48,7 @@ class Course extends Model
     "status",
     "teacher",
     "image",
-    "reviews"
+    "reviews",
   ];
 
   public function carts()
@@ -141,7 +141,7 @@ class Course extends Model
 
   public function getIsEnrolledAttribute()
   {
-    return $this->students->contains(auth()?->guard("api")?->user()?->id);
+    return $this->students()->where("user_id", auth()->guard("api")->user()?->id)->exists();
   }
 
   public function getLastUpdateAttribute()
