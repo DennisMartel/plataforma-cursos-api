@@ -42,6 +42,7 @@ Route::middleware("x_api_key")->group(function () {
     Route::post("/sign-in", [AuthController::class, "signin"]);
     Route::post("/sign-up", [AuthController::class, "signup"]);
     Route::post("/logout", [AuthController::class, "logout"]);
+    Route::post("/refresh", [AuthController::class, "refresh"]);
     Route::post("/send-code-verification", [ForgotPasswordController::class, "sendCodeVerification"]);
     Route::post("/forgot-password", [ForgotPasswordController::class, "forgotPassword"]);
     Route::post("/reset-password", [ForgotPasswordController::class, "resetPassword"]);

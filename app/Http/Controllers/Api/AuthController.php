@@ -17,7 +17,7 @@ class AuthController extends Controller
 {
   public function __construct()
   {
-    $this->middleware("auth:api", ["except" => ["signin", "signup"]]);
+    $this->middleware("auth:api", ["except" => ["signin", "signup", "refresh"]]);
   }
 
   public function signin(Request $req)
@@ -125,5 +125,15 @@ class AuthController extends Controller
         "logout" => false
       ], Response::HTTP_INTERNAL_SERVER_ERROR);
     }
+  }
+
+  public function refresh()
+  {
+    return response()->json([
+      "authorization" => [
+        "token" => auth()->guard("api")->refresh(),
+        "type" => "Bearer"
+      ]
+    ]);
   }
 }
