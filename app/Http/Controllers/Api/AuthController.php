@@ -118,7 +118,7 @@ class AuthController extends Controller
       return response()->json([
         "message" => "Successfully logged out",
         "logout" => true
-      ], Response::HTTP_INTERNAL_SERVER_ERROR);
+      ], Response::HTTP_OK);
     } catch (\Exception $e) {
       return response()->json([
         "message" => "Failed to logout",
