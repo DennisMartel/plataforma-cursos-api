@@ -110,4 +110,20 @@ class AuthController extends Controller
       ], Response::HTTP_INTERNAL_SERVER_ERROR);
     }
   }
+
+  public function logout()
+  {
+    try {
+      JWTAuth::invalidate(JWTAuth::parseToken());
+      return response()->json([
+        "message" => "Successfully logged out",
+        "logout" => true
+      ], Response::HTTP_INTERNAL_SERVER_ERROR);
+    } catch (\Exception $e) {
+      return response()->json([
+        "message" => "Failed to logout",
+        "logout" => false
+      ], Response::HTTP_INTERNAL_SERVER_ERROR);
+    }
+  }
 }
