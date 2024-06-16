@@ -129,11 +129,27 @@ class AuthController extends Controller
 
   public function refresh()
   {
-    return response()->json([
-      "authorization" => [
-        "token" => auth()->guard("api")->refresh(),
-        "type" => "Bearer"
-      ]
-    ]);
+    try {
+      $refreshToken = JWTAuth::refresh(JWTAuth::getToken());
+
+      return response()->json([
+        "authorization" => [
+          "token" => $refreshToken,
+          "type" => "Bearer"
+        ]
+      ]);
+    } catch (JWTException $e) {
+      if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenBlacklistedException) {
+        return response()->json(["message" => $e->getMessage()], Response::HTTP_UNAUTHORIZED);
+      }
+
+      if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) {
+        return response()->json(["message" => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+      }
+
+      return response()->json(["message" => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+    } catch (Exception $e) {
+      return response()->json(["message" => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+    }
   }
 }

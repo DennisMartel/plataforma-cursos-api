@@ -69,7 +69,6 @@ class User extends Authenticatable implements JWTSubject
   public function getJWTCustomClaims()
   {
     return [
-      "exp" => Carbon::now()->addHour()->timestamp,
       "userInfo" => [
         "name" => $this->name,
         "lastname" => $this->lastname,
