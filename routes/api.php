@@ -5,20 +5,10 @@ use App\Http\Controllers\Api\CourseController;
 use App\Http\Controllers\Api\CourseStatusController;
 use App\Http\Controllers\Api\FilterController;
 use App\Http\Controllers\Api\ForgotPasswordController;
+use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\SocialAuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
   return $request->user();
@@ -36,6 +26,10 @@ Route::middleware("x_api_key")->group(function () {
     Route::get("/course-progress", [CourseStatusController::class, "progress"]);
     Route::post("/toggle-lesson-status", [CourseStatusController::class, "toggle_lesson_status"]);
     Route::post("/course-enroll", [CourseStatusController::class, "enroll"]);
+
+    Route::prefix("account")->group(function () {
+      Route::get("/profile", [ProfileController::class, "profile"]);
+    });
   });
 
   Route::prefix("authentication")->group(function () {

@@ -7,19 +7,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cart extends Model
 {
-    use HasFactory;
+  use HasFactory;
 
-    protected $fillable = [
-        "quantity",
-        "course_id",
-        "user_id"
-    ];
+  protected $fillable = [
+    "quantity",
+    "course_id",
+    "user_id"
+  ];
 
-    public function courses() {
-        return $this->belongsToMany(Course::class);
-    }
+  public function course()
+  {
+    return $this->belongsTo(Course::class);
+  }
 
-    public function user() {
-        return $this->belongsTo(User::class);
-    }
+  public function user()
+  {
+    return $this->belongsTo(User::class);
+  }
 }
