@@ -41,6 +41,7 @@ class CartController extends Controller
 
       $item = new \stdClass;
       $item->id = $cart->course->id;
+      $item->cart_id = $cart->id;
       $item->title = $cart->course->title;
       $item->slug = $cart->course->slug;
       $item->rating = $cart->course->rating;

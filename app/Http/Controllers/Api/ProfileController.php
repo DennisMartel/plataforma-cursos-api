@@ -22,6 +22,7 @@ class ProfileController extends Controller
         ->map(function ($cart) {
           return [
             "id" => $cart->course->id,
+            "cart_id" => $cart->id,
             "title" => $cart->course->title,
             "slug" => $cart->course->slug,
             "rating" => $cart->course->rating,
