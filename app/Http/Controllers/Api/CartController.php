@@ -65,4 +65,31 @@ class CartController extends Controller
       ], Response::HTTP_INTERNAL_SERVER_ERROR);
     }
   }
+
+  public function removeCartItem(Request $req)
+  {
+    try {
+      $courseId = $req->courseId;
+      $cartId = $req->cartId;
+      $course = Course::find($courseId);
+      $cart = Cart::find($cartId);
+
+      if ($course == null || $cart == null) {
+        return response()->json([
+          "item" => null,
+          "message" => "No es posible eliminar este curso del carrito de compras, intenta nuevamente"
+        ], Response::HTTP_BAD_REQUEST);
+      }
+
+      $cart->delete();
+
+      return response()->json([
+        "message" => "producto eliminado del carrito"
+      ], Response::HTTP_OK);
+    } catch (\Exception $e) {
+      return response()->json([
+        "message" => $e->getMessage()
+      ], Response::HTTP_INTERNAL_SERVER_ERROR);
+    }
+  }
 }

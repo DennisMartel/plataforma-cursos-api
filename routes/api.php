@@ -34,6 +34,7 @@ Route::middleware("x_api_key")->group(function () {
 
     Route::prefix("shopping-cart")->group(function () {
       Route::post("/add-cart-item", [CartController::class, "addCartItem"]);
+      Route::post("/remove-cart-item", [CartController::class, "removeCartItem"]);
     });
   });
 
