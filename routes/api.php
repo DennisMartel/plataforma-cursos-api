@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\CourseController;
 use App\Http\Controllers\Api\CourseStatusController;
 use App\Http\Controllers\Api\FilterController;
@@ -30,7 +31,12 @@ Route::middleware("x_api_key")->group(function () {
     Route::prefix("account")->group(function () {
       Route::get("/profile", [ProfileController::class, "profile"]);
     });
+
+    Route::prefix("shopping-cart")->group(function () {
+      Route::post("/add-cart-item", [CartController::class, "addCartItem"]);
+    });
   });
+
 
   Route::prefix("authentication")->group(function () {
     Route::post("/sign-in", [AuthController::class, "signin"]);
