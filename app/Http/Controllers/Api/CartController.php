@@ -76,7 +76,6 @@ class CartController extends Controller
 
       if ($course == null || $cart == null) {
         return response()->json([
-          "item" => null,
           "message" => "No es posible eliminar este curso del carrito de compras, intenta nuevamente"
         ], Response::HTTP_BAD_REQUEST);
       }
