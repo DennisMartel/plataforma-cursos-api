@@ -51,7 +51,6 @@ class Course extends Model
     "image",
     "reviews",
     "promotions",
-    "category",
   ];
 
   public function cart()

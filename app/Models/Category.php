@@ -21,6 +21,13 @@ class Category extends Model
     "status"
   ];
 
+  protected $hidden = [
+    "updated_at",
+    "created_at",
+    "status",
+    "promotions"
+  ];
+
   public function courses()
   {
     return $this->hasMany(Course::class)->where("status", Course::APPROVED);
