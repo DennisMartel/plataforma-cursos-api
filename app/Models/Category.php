@@ -25,4 +25,9 @@ class Category extends Model
   {
     return $this->hasMany(Course::class)->where("status", Course::APPROVED);
   }
+
+  public function promotions()
+  {
+    return $this->belongsToMany(Promotion::class, "category_promotion");
+  }
 }

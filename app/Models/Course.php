@@ -36,7 +36,8 @@ class Course extends Model
     "image_course",
     "rating",
     "last_update",
-    "is_enrolled"
+    "is_enrolled",
+    "discount_price"
   ];
 
   protected $hidden = [
@@ -49,6 +50,8 @@ class Course extends Model
     "teacher",
     "image",
     "reviews",
+    "promotions",
+    "category",
   ];
 
   public function cart()
@@ -94,6 +97,11 @@ class Course extends Model
   public function reviews()
   {
     return $this->hasMany(Review::class);
+  }
+
+  public function promotions()
+  {
+    return $this->belongsToMany(Promotion::class, "course_promotion");
   }
 
   // Scopes
@@ -147,5 +155,20 @@ class Course extends Model
   public function getLastUpdateAttribute()
   {
     return Carbon::parse($this->updated_at)->toDateString();
+  }
+
+  public function getDiscountPriceAttribute()
+  {
+    $price = $this->price;
+
+    $promotions = $this->promotions->merge($this->category->promotions);
+
+    $activePromotions = $promotions->filter(function ($promotion) {
+      return now()->between($promotion->start_date, $promotion->end_date);
+    });
+
+    $discount = $activePromotions->max("discount_percentage");
+
+    return $discount ? number_format($price - ($price * ($discount / 100)), 2) : "";
   }
 }

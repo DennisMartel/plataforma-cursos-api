@@ -27,6 +27,7 @@ class ProfileController extends Controller
             "slug" => $cart->course->slug,
             "rating" => $cart->course->rating,
             "price" => number_format((float)$cart->course->price, 2),
+            "discount_price" => number_format((float)$cart->course->discount_price, 2),
             "last_update" => $cart->course->last_update,
             "image" => $cart->course->image_course,
             "teacher_name" => $cart->course->teacher_name,

@@ -46,6 +46,7 @@ class CartController extends Controller
       $item->slug = $cart->course->slug;
       $item->rating = $cart->course->rating;
       $item->price = number_format((float)$cart->course->price, 2);
+      $item->discount_price = number_format((float)$cart->course->discount_price, 2);
       $item->last_update = $cart->course->last_update;
       $item->image = $cart->course->image_course;
       $item->teacher_name = $cart->course->teacher_name;
