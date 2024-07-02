@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\CourseController;
 use App\Http\Controllers\Api\CourseStatusController;
 use App\Http\Controllers\Api\FilterController;
 use App\Http\Controllers\Api\ForgotPasswordController;
+use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\SocialAuthController;
 use Illuminate\Http\Request;
@@ -35,9 +36,9 @@ Route::middleware("x_api_key")->group(function () {
     Route::prefix("shopping-cart")->group(function () {
       Route::post("/add-cart-item", [CartController::class, "addCartItem"]);
       Route::post("/remove-cart-item", [CartController::class, "removeCartItem"]);
+      Route::post("/payment/transaction", [PaymentController::class, "pay"]);
     });
   });
-
 
   Route::prefix("authentication")->group(function () {
     Route::post("/sign-in", [AuthController::class, "signin"]);

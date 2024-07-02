@@ -42,4 +42,11 @@ return [
     'client_secret' => env('FACEBOOK_CLIENT_SECRET'),
     'redirect' => env('FACEBOOK_REDIRECT_URI'),
   ],
+
+  'paypal' => [
+    'client_id' => env('PAYPAL_CLIENT_ID'),
+    'client_secret' => env('PAYPAL_CLIENT_SECRET'),
+    'base_uri' => env('PAYPAL_BASE_URI'),
+    'class' => App\Services\PayPalService::class
+  ],
 ];
