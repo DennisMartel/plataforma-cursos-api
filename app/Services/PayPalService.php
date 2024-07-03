@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Illuminate\Http\Request;
 use App\Traits\ConsumesExternalServices;
+use Illuminate\Http\Response;
 use Illuminate\Support\Str;
 
 class PayPalService
@@ -72,14 +73,14 @@ class PayPalService
       $amount = $payment->value;
       $currency = $payment->currency_code;
 
-      return redirect()
-        ->route('home')
-        ->withSuccess(['payment' => "Thanks, {$name}. We received your {$amount}{$currency} payment."]);
+      return response()->json([
+        "message" => "Thanks, {$name}. We received your {$amount}{$currency} payment."
+      ], Response::HTTP_OK);
     }
 
-    return redirect()
-      ->route('home')
-      ->withErrors('We cannot capture your payment. Try again, please');
+    return response()->json([
+      "message" => "We cannot capture your payment. Try again, please"
+    ], Response::HTTP_BAD_REQUEST);
   }
 
   public function handleSubscription(Request $request)

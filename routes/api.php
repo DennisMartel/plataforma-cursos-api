@@ -36,7 +36,11 @@ Route::middleware("x_api_key")->group(function () {
     Route::prefix("shopping-cart")->group(function () {
       Route::post("/add-cart-item", [CartController::class, "addCartItem"]);
       Route::post("/remove-cart-item", [CartController::class, "removeCartItem"]);
-      Route::post("/payment/transaction", [PaymentController::class, "pay"]);
+    });
+
+    Route::prefix("payment")->group(function () {
+      Route::post("/transaction", [PaymentController::class, "pay"]);
+      Route::post("/transaction-approval", [PaymentController::class, "approval"])->name("approval");
     });
   });
 

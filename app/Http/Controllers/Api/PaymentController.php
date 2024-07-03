@@ -35,4 +35,19 @@ class PaymentController extends Controller
 
     return $paymenPlatform->handlePayment($req);
   }
+
+  public function approval()
+  {
+    if (session()->has("paymentPlatformId")) {
+      $paymentPlatformId = session()->get("paymentPlatformId");
+
+      $paymenPlatform = $this->paymentPlatformResolver->resolveService($paymentPlatformId);
+
+      return $paymenPlatform->handleApproval();
+    }
+
+    return response()->json([
+      "message" => "We cannot retrieve your payment platform. Try again, plase."
+    ], Response::HTTP_BAD_REQUEST);
+  }
 }
