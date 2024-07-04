@@ -133,8 +133,8 @@ class PayPalService
           'brand_name' => config('app.name'),
           'shipping_preference' => 'NO_SHIPPING',
           'user_action' => 'PAY_NOW',
-          'return_url' => env("PAYMENT_ACTION_APPROVAL_URL") . "?ReferenceId=$referenceId",
-          'cancel_url' => env("PAYMENT_ACTION_CANCELLED_URL"),
+          'return_url' => env("PAYMENT_CTA_URL") . "?cta=ok&ref_id=$referenceId",
+          'cancel_url' => env("PAYMENT_CTA_URL") . "?cta=bad&ref_id=unk",
         ]
       ],
       [],
