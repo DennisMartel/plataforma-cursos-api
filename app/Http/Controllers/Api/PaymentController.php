@@ -36,15 +36,23 @@ class PaymentController extends Controller
 
   public function approval(Request $request)
   {
-    if ($request->payment_platform) {
-      $paymenPlatform = $this->paymentPlatformResolver
-        ->resolveService($request->payment_platform);
+    try {
+      if ($request->pay_tkn) {
+        $data = decodeToken($request->pay_tkn);
 
-      return $paymenPlatform->handleApproval($request->approval_id);
+        $paymenPlatform = $this->paymentPlatformResolver
+          ->resolveService($data->payment_platform);
+
+        return $paymenPlatform->handleApproval($data->approval_id);
+      }
+
+      return response()->json([
+        "message" => "We cannot retrieve your payment platform. Try again, please."
+      ], Response::HTTP_BAD_REQUEST);
+    } catch (\Exception $e) {
+      return response()->json([
+        "message" => $e->getMessage()
+      ], Response::HTTP_INTERNAL_SERVER_ERROR);
     }
-
-    return response()->json([
-      "message" => "We cannot retrieve your payment platform. Try again, please."
-    ], Response::HTTP_BAD_REQUEST);
   }
 }
