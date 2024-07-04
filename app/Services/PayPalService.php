@@ -56,16 +56,22 @@ class PayPalService
 
     $approve = $orderLinks->where('rel', 'approve')->first();
 
-    session()->put('approvalId', $order->id);
+    $customClaims = [
+      "approval_id" => $order->id,
+      "payment_platform" => $request->payment_platform
+    ];
 
-    return response()->json(["url" => $approve->href]);
+    $token = tokenSign($customClaims);
+
+    return response()->json([
+      "redirect_to" => $approve->href,
+      "token" => $token,
+    ]);
   }
 
-  public function handleApproval()
+  public function handleApproval($approvalId)
   {
-    if (session()->has('approvalId')) {
-      $approvalId = session()->get('approvalId');
-
+    if ($approvalId) {
       $payment = $this->capturePayment($approvalId);
 
       $name = $payment->payer->name->given_name;

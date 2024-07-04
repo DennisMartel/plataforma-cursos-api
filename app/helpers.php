@@ -1,5 +1,7 @@
 <?php
 
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 
@@ -18,6 +20,19 @@ function defaultEntryJsonNotFound()
   ], Response::HTTP_NOT_FOUND);
 }
 
+function tokenSign($claims)
+{
+  return JWT::encode($claims, env("JWT_SECRET"), "HS256");
+}
+
+function decodeToken($token)
+{
+  try {
+    return JWT::decode($token, new Key(env("JWT_SECRET"), "HS256"));
+  } catch (\Exception) {
+    return null;
+  }
+}
 
 function getTotalShoppingCart()
 {
