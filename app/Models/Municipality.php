@@ -7,19 +7,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class Municipality extends Model
 {
-    use HasFactory;
+  use HasFactory;
 
-    protected $fillable = [
-        "name",
-        "zip_code",
-        "department_id"
-    ];
+  protected $fillable = [
+    "name",
+    "zip_code",
+    "department_id"
+  ];
 
-    public function department() {
-        return $this->belongsTo(Department::class);
-    }
+  public function department()
+  {
+    return $this->belongsTo(Department::class);
+  }
 
-    public function orders() {
-        return $this->hasMany(Order::class);
-    }
+  public function purchases()
+  {
+    return $this->hasMany(Purchase::class);
+  }
 }

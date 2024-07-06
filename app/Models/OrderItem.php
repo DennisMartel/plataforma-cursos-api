@@ -5,20 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class OrderItem extends Model
+class PurchaseItem extends Model
 {
-    use HasFactory;
+  use HasFactory;
 
-    protected $fillable = [
-        "course_name",
-        "sale_price",
-        "regular_price",
-        "image_course",
-        "quantity",
-        "order_id"
-    ];
+  protected $fillable = [
+    "course_name",
+    "sale_price",
+    "regular_price",
+    "image_course",
+    "quantity",
+    "purchase_id"
+  ];
 
-    public function order() {
-        return $this->belongsTo(Order::class);
-    }
+  public function purchase()
+  {
+    return $this->belongsTo(Purchase::class);
+  }
 }

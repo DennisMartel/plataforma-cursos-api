@@ -7,23 +7,26 @@ use Illuminate\Database\Eloquent\Model;
 
 class Department extends Model
 {
-    use HasFactory;
+  use HasFactory;
 
-    protected $fillable = [
-        "name",
-        "iso_code",
-        "country_id"
-    ];
+  protected $fillable = [
+    "name",
+    "iso_code",
+    "country_id"
+  ];
 
-    public function country() {
-        return $this->belongsTo(Country::class);
-    }
+  public function country()
+  {
+    return $this->belongsTo(Country::class);
+  }
 
-    public function municipalities() {
-        return $this->hasMany(Municipality::class);
-    }
+  public function municipalities()
+  {
+    return $this->hasMany(Municipality::class);
+  }
 
-    public function orders() {
-        return $this->hasMany(Order::class);
-    }
+  public function purchases()
+  {
+    return $this->hasMany(Purchase::class);
+  }
 }

@@ -106,14 +106,14 @@ class User extends Authenticatable implements JWTSubject
     return $this->belongsToMany(Lesson::class);
   }
 
-  public function orders()
+  public function purchases()
   {
-    return $this->hasMany(Order::class);
+    return $this->hasMany(Purchase::class);
   }
 
-  public function order_items()
+  public function purchase_items()
   {
-    return $this->hasManyThrough(OrderItem::class, Order::class);
+    return $this->hasManyThrough(PurchaseItem::class, Purchase::class);
   }
 
   public function socialProfiles()
