@@ -49,6 +49,7 @@ class User extends Authenticatable implements JWTSubject
 
   protected $appends = [
     "profile_image",
+    "shopping_cart"
   ];
 
   /**
@@ -145,6 +146,33 @@ class User extends Authenticatable implements JWTSubject
     }
 
     return asset("images/default-avatar.png");
+  }
+
+  public function getShoppingCartAttribute()
+  {
+    return $this->cart()
+      ->with(["course"])
+      ->get()
+      ->map(function ($cart) {
+        return [
+          "id" => $cart->course->id,
+          "cart_id" => $cart->id,
+          "title" => $cart->course->title,
+          "slug" => $cart->course->slug,
+          "rating" => $cart->course->rating,
+          "price" => number_format((float)$cart->course->price, 2),
+          "discount_price" => $cart->course->discount_price,
+          "last_update" => $cart->course->last_update,
+          "image" => $cart->course->image_course,
+          "teacher_name" => $cart->course->teacher_name,
+          "teacher_pic" => $cart->course->teacher_image,
+          "lessons_count" => $cart->course->lessons_count,
+          "is_enrolled" => $cart->course->is_enrolled,
+          "category" => $cart->course->category->title,
+          "level" => $cart->course->level->title
+        ];
+      })
+      ->values();
   }
 
   public function sendPasswordResetNotification($token)

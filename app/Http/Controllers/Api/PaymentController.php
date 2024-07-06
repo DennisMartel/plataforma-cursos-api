@@ -43,7 +43,7 @@ class PaymentController extends Controller
         $paymenPlatform = $this->paymentPlatformResolver
           ->resolveService($data->payment_platform);
 
-        return $paymenPlatform->handleApproval($data->approval_id);
+        return $paymenPlatform->handleApproval($data);
       }
 
       return response()->json([

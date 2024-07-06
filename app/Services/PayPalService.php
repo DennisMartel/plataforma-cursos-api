@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Models\Cart;
+use App\Models\Purchase;
 use Illuminate\Http\Request;
 use App\Traits\ConsumesExternalServices;
 use Illuminate\Http\Response;
@@ -19,12 +21,15 @@ class PayPalService
 
   protected $plans;
 
+  protected $user;
+
   public function __construct()
   {
     $this->baseUri = config('services.paypal.base_uri');
     $this->clientId = config('services.paypal.client_id');
     $this->clientSecret = config('services.paypal.client_secret');
     $this->plans = config('services.paypal.plans');
+    $this->user = auth()->guard("api")->user();
   }
 
   public function resolveAuthorization(&$queryParams, &$formParams, &$headers)
@@ -58,7 +63,15 @@ class PayPalService
 
     $customClaims = [
       "approval_id" => $order->id,
-      "payment_platform" => $request->payment_platform
+      "payment_platform" => $request->payment_platform,
+      "reference_code" => $referenceId,
+      "name" => $request->name,
+      "lastname" => $request->lastname,
+      "email" => $request->email,
+      "phone_number" => $request->phone_number,
+      "country_id" => $request->country_id,
+      "department_id" => $request->department_id,
+      "municipality_id" => $request->municipality_id,
     ];
 
     $token = tokenSign($customClaims);
@@ -69,15 +82,43 @@ class PayPalService
     ]);
   }
 
-  public function handleApproval($approvalId)
+  public function handleApproval($request)
   {
-    if ($approvalId) {
-      $payment = $this->capturePayment($approvalId);
+    if ($request->approval_id) {
+      $payment = $this->capturePayment($request->approval_id);
 
-      $name = $payment->payer->name->given_name;
+      $name = $request->name; /*$payment->payer->name->given_name*/
       $payment = $payment->purchase_units[0]->payments->captures[0]->amount;
       $amount = $payment->value;
       $currency = $payment->currency_code;
+
+      $purchase = Purchase::create([
+        "reference_code" => $request->reference_code,
+        "name" => $name,
+        "lastname" => $request->lastname,
+        "email" => $request->email,
+        "phone_number" => $request->phone_number,
+        "total" => $amount,
+        "user_id" => $this->user->id,
+        "country_id" => $request->country_id,
+        "department_id" => $request->department_id,
+        "municipality_id" => $request->municipality_id,
+      ]);
+
+      $carts = $this->user->shopping_cart;
+
+      foreach ($carts as $cart) {
+        $items[] = [
+          "course_name" => $cart["title"],
+          "sale_price" => $cart["discount_price"] ?: $cart["price"],
+          "regular_price" => $cart["price"],
+          "image_course" => $cart["image"]
+        ];
+      }
+
+      $purchase->purchase_items()->createMany($items);
+
+      Cart::destroy($carts->pluck("cart_id"));
 
       return response()->json([
         "message" => "Thanks, {$name}. We received your {$amount}{$currency} payment."
