@@ -118,6 +118,8 @@ class PayPalService
 
       $purchase->purchase_items()->createMany($items);
 
+      $this->user->enrolled_courses()->sync($carts->pluck("id"));
+
       Cart::destroy($carts->pluck("cart_id"));
 
       return response()->json([
