@@ -18,7 +18,10 @@ class SocialAuthController extends Controller
 
     if (in_array($driver, $drivers)) {
       return response()->json([
-        "uri" => Socialite::driver($driver)->stateless()->redirect()->getTargetUrl()
+        "uri" => Socialite::driver($driver)
+          ->stateless()
+          ->redirect()
+          ->getTargetUrl()
       ], 200);
     }
   }
@@ -48,11 +51,17 @@ class SocialAuthController extends Controller
         ]);
       }
 
+      $socialAvatar = $userSocialite->getAvatar();
+
+      if ($driver === "facebook") {
+        $socialAvatar = $userSocialite->getAvatar() . "&access_token=" . $userSocialite->token;
+      }
+
       $socialProfile = SocialProfile::create([
         'user_id' => $user->id,
         'social_id' => $userSocialite->getId(),
         'social_name' => $driver,
-        'social_avatar' => $userSocialite->getAvatar()
+        'social_avatar' => $socialAvatar
       ]);
     }
 
