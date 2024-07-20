@@ -33,7 +33,9 @@ class SocialAuthController extends Controller
       ], Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
-    $socialProfile = SocialProfile::where('social_id', $userSocialite->getId())->where('social_name', $driver)->first();
+    $socialProfile = SocialProfile::where('social_id', $userSocialite->getId())
+      ->where('social_name', $driver)
+      ->first();
 
     if (!$socialProfile) {
       $user = User::where('email', $userSocialite->getEmail())->first();
@@ -54,7 +56,10 @@ class SocialAuthController extends Controller
       ]);
     }
 
-    $jwt = JWTAuth::fromUser($socialProfile->user);
+    $jwt = JWTAuth::claims([
+      "login_type" => $driver,
+      "social_id" => $userSocialite->getId()
+    ])->fromUser($socialProfile->user);
 
     if (!$jwt) {
       return response()->json([

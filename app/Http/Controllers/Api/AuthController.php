@@ -34,7 +34,10 @@ class AuthController extends Controller
 
       $credentials = $req->only("email", "password");
 
-      $token = JWTAuth::attempt($credentials, $req->remember);
+      $token = JWTAuth::claims([
+        "login_type" => "normal",
+        "social_id" => "none"
+      ])->attempt($credentials, $req->remember);
 
       try {
         if ($token == null) {
@@ -88,7 +91,10 @@ class AuthController extends Controller
         "password" => Hash::make($req->password)
       ]);
 
-      $jwt = JWTAuth::fromUser($user);
+      $jwt = JWTAuth::claims([
+        "login_type" => "normal",
+        "social_id" => "none"
+      ])->fromUser($user);
 
       return response()->json([
         "type" => "success",

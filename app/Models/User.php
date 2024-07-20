@@ -11,6 +11,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Laravel\Sanctum\HasApiTokens;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -135,7 +136,22 @@ class User extends Authenticatable implements JWTSubject
   // Attribute
   public function getProfileImageAttribute()
   {
-    $socialProfiles = $this->socialProfiles()->first();
+    $loginType = null;
+    $socialId = null;
+
+    if (auth()->guard("api")->user()) {
+      try {
+        $token = JWTAuth::parseToken();
+        $loginType = $token->getClaim("login_type");
+        $socialId = $token->getClaim("social_id");
+      } catch (\Exception) {
+      }
+    }
+
+    $socialProfiles = $this->socialProfiles()
+      ->where("social_name", $loginType)
+      ->where("social_id", $socialId)
+      ->first();
 
     if ($socialProfiles) {
       return $socialProfiles->social_avatar;
