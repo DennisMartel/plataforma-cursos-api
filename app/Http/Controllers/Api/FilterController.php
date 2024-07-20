@@ -14,12 +14,14 @@ class FilterController extends Controller
   public function __invoke()
   {
     try {
-      $categories = Category::whereHas('courses', function ($query) {
-        $query->where('courses.status', Course::APPROVED);
+      $search = request("search");
+
+      $categories = Category::whereHas('courses', function ($query) use ($search) {
+        $query->search($search)->where('courses.status', Course::APPROVED);
       })->where('categories.status', Category::ACTIVE)->get();
 
-      $levels = Level::whereHas("courses", function ($query) {
-        $query->where("courses.status", Course::APPROVED);
+      $levels = Level::whereHas("courses", function ($query) use ($search) {
+        $query->search($search)->where("courses.status", Course::APPROVED);
       })->get();
 
       $prices = [

@@ -52,6 +52,7 @@ class CourseController extends Controller
     try {
       $cats = request("categories");
       $levels = request("levels");
+      $search = request("search");
       $prices = request("prices");
       $page = request("page");
 
@@ -66,6 +67,7 @@ class CourseController extends Controller
             $query->whereIn("title", $levels);
           });
         })
+        ->search($search)
         ->latest("id")
         ->paginate(12, ["*"], "page", $page);
 
